@@ -19,7 +19,6 @@ public class MineSweeperPresenter implements Observer {
 
     private Selected selected() {
         return (cellPosition, button) -> {
-            System.out.println("pepe");
             if (button == 1) {
                 mineSweeperGame.realizeMove(cellPosition.x(), cellPosition.y(), false);
             } else if (button == 3) {
