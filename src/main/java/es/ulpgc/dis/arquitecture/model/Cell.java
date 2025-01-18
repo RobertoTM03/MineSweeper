@@ -1,4 +1,4 @@
-package es.ulpgc.dis.model;
+package es.ulpgc.dis.arquitecture.model;
 
 public record Cell(Status status, Boolean mine, int adjacentMines) {
     public enum Status {

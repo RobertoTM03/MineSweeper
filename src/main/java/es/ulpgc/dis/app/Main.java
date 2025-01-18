@@ -1,8 +1,8 @@
-package es.ulpgc.dis;
+package es.ulpgc.dis.app;
 
-import es.ulpgc.dis.control.MineSweeperDifficultyController;
-import es.ulpgc.dis.presenter.MineSweeperPresenter;
-import es.ulpgc.dis.view.MainFrame;
+import es.ulpgc.dis.arquitecture.control.MineSweeperDifficultyController;
+import es.ulpgc.dis.arquitecture.presenter.MineSweeperPresenter;
+import es.ulpgc.dis.arquitecture.view.MainFrame;
 
 public class Main {
     public static void main(String[] args) {

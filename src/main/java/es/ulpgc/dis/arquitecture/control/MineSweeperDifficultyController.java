@@ -1,9 +1,9 @@
-package es.ulpgc.dis.control;
+package es.ulpgc.dis.arquitecture.control;
 
-import es.ulpgc.dis.presenter.MineSweeperPresenter;
-import es.ulpgc.dis.view.BoardDisplay;
-import es.ulpgc.dis.view.CustomDifficultDialog;
-import es.ulpgc.dis.view.SelectDifficultDialog;
+import es.ulpgc.dis.arquitecture.presenter.MineSweeperPresenter;
+import es.ulpgc.dis.arquitecture.view.BoardDisplay;
+import es.ulpgc.dis.arquitecture.view.CustomDifficultDialog;
+import es.ulpgc.dis.arquitecture.view.SelectDifficultDialog;
 
 public class MineSweeperDifficultyController implements Command{
     private final SelectDifficultDialog dialog;

@@ -1,4 +1,4 @@
-package es.ulpgc.dis.model;
+package es.ulpgc.dis.arquitecture.model;
 
 import java.util.ArrayList;
 import java.util.List;

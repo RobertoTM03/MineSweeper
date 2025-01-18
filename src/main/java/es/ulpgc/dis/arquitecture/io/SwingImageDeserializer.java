@@ -1,4 +1,4 @@
-package es.ulpgc.dis.io;
+package es.ulpgc.dis.arquitecture.io;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
