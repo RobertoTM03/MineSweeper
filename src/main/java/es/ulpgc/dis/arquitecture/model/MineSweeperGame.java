@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MineSweeperGame {
-    Minesweeper minesweeper;
-
+    private Minesweeper minesweeper;
     private final List<Observer> observers = new ArrayList<>(); // Presenter
 
     private GameStatus gameStatus;
@@ -48,18 +47,21 @@ public class MineSweeperGame {
         if (gameStatus != GameStatus.Progress || !isInBounds(row, column)) return;
 
         if (numberOfMoves == 0) {
-            if (flag) return;
+            if (flag) {
+                minesweeper.nextMove(row, column, true);
+                updateAllObservers();
+                return;
+            }
             minesweeper.firstMove(row, column);
         } else {
             Cell previuosCell = minesweeper.getCellMatrix()[row][column];
-            if (flag && previuosCell.mine()) updateRemainingMines(previuosCell);
+            if (flag) updateRemainingMines(previuosCell);
             minesweeper.nextMove(row, column, flag);
         }
 
         checkIfGameEnded();
-
-        numberOfMoves++;
         updateAllObservers();
+        numberOfMoves++;
     }
 
     private void checkIfGameEnded() {

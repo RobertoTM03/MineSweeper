@@ -20,11 +20,7 @@ public class Minesweeper {
     }
 
     public Cell[][] getCellMatrix() {
-        Cell[][] copy = new Cell[board.length][board[0].length];
-        for (int i = 0; i < board.length; i++) {
-            System.arraycopy(board[i], 0, copy[i], 0, board[i].length);
-        }
-        return copy;
+        return board;
     }
 
     private void initGameWithPrediction(int row, int column) {
@@ -52,11 +48,10 @@ public class Minesweeper {
             }
         }
 
-        Cell mineCell = new Cell(Cell.Status.Unrevealed, true, -1);
         Random random = new Random();
         for (int i = 0; i < numberOfMines; i++) {
             int[] mine = cells.remove(random.nextInt(cells.size()));
-            board[mine[0]][mine[1]] = mineCell;
+            board[mine[0]][mine[1]] = new Cell(board[mine[0]][mine[1]].status(), true, -1);
         }
     }
 
@@ -65,7 +60,7 @@ public class Minesweeper {
             for (int j = 0; j < numberOfColumns; j++) {
                 if (!board[i][j].mine()) {
                     int count = countAdjacentMines(i, j);
-                    board[i][j] = new Cell(Cell.Status.Unrevealed, false, count);
+                    board[i][j] = new Cell(board[i][j].status(), false, count);
                 }
             }
         }
@@ -122,6 +117,7 @@ public class Minesweeper {
 
     private void revealCell(int row, int column) {
         if (board[row][column].status() == Cell.Status.Revealed) return;
+        if (board[row][column].status() == Cell.Status.Flagged) return;
         int adjacentMines = board[row][column].adjacentMines();
         board[row][column] = new Cell(Cell.Status.Revealed, false, adjacentMines);
         if (adjacentMines == 0) {

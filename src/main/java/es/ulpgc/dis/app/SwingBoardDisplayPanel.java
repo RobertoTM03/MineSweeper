@@ -8,6 +8,7 @@ import es.ulpgc.dis.arquitecture.view.BoardDisplay;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Map;
@@ -83,8 +84,7 @@ public class SwingBoardDisplayPanel extends JPanel implements BoardDisplay {
     private void paintSelectedCell(Graphics g, int x, int y, int cellWidth, int cellHeight) {
         g.setColor(Color.green.darker());
         g.fillRect(x, y, cellWidth, cellHeight);
-        g.setColor(Color.black);
-        g.drawRect(x, y, cellWidth, cellHeight);
+        paintOutline(g, x, y, cellWidth, cellHeight);
     }
 
     private void paintFlag(Graphics g, int x, int y, int cellWidth, int cellHeight) {
@@ -95,8 +95,7 @@ public class SwingBoardDisplayPanel extends JPanel implements BoardDisplay {
     private void paintMine(Graphics g, int x, int y, int cellWidth, int cellHeight) {
         paintIcon(g, "dirt", x, y, cellWidth, cellHeight);
         paintIcon(g, "mine", x + cellWidth / 4, y + cellHeight / 4, cellWidth / 2, cellHeight / 2);
-        g.setColor(Color.black);
-        g.drawRect(x, y, cellWidth, cellHeight);
+        paintOutline(g, x, y, cellWidth, cellHeight);
     }
 
     private void paintCounter(Graphics g, Cell current, int x, int y, int cellWidth, int cellHeight) {
@@ -105,12 +104,15 @@ public class SwingBoardDisplayPanel extends JPanel implements BoardDisplay {
             String result = "open" + current.adjacentMines();
             paintIcon(g, result, x + cellWidth / 4, y + cellHeight / 4, cellWidth / 2, cellHeight / 2);
         }
-        g.setColor(Color.black);
-        g.drawRect(x, y, cellWidth, cellHeight);
+        paintOutline(g, x, y, cellWidth, cellHeight);
     }
 
     private void paintNoneRevealedCell(Graphics g, int x, int y, int cellWidth, int cellHeight) {
         paintIcon(g, "grass", x, y, cellWidth, cellHeight);
+        paintOutline(g, x, y, cellWidth, cellHeight);
+    }
+
+    private static void paintOutline(Graphics g, int x, int y, int cellWidth, int cellHeight) {
         g.setColor(Color.black);
         g.drawRect(x, y, cellWidth, cellHeight);
     }
@@ -131,37 +133,26 @@ public class SwingBoardDisplayPanel extends JPanel implements BoardDisplay {
         return (x - 5) / getCellWidth();
     }
 
-
-
     private MouseListener createMouseListener() {
-        return new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int button = e.getButton();
-                int currentRow = toRow(e.getY());
-                int currentColumn = toColumn(e.getX());
-
-                selected.at(new Position(currentRow, currentColumn), button);
-            }
+        return new MouseAdapter() {
+            private int currentColumn;
+            private int currentRow;
 
             @Override
             public void mousePressed(MouseEvent e) {
+                currentRow = toRow(e.getY());
+                currentColumn = toColumn(e.getX());
                 selectedPosition = new Position(toRow(e.getY()), toColumn(e.getX()));
                 repaint();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                if (currentRow == toRow(e.getY()) && currentColumn == toColumn(e.getX())) {
+                    selected.at(new Position(currentRow, currentColumn), e.getButton());
+                }
                 selectedPosition = null;
                 repaint();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
             }
         };
     }
