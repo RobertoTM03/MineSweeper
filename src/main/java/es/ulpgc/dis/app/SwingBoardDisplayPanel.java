@@ -1,40 +1,38 @@
 package es.ulpgc.dis.app;
 
 import es.ulpgc.dis.arquitecture.io.FileImageLoader;
+import es.ulpgc.dis.arquitecture.model.Board;
 import es.ulpgc.dis.arquitecture.model.Cell;
 import es.ulpgc.dis.arquitecture.model.Image;
-import es.ulpgc.dis.arquitecture.presenter.MineSweeperPresenter;
 import es.ulpgc.dis.arquitecture.view.BoardDisplay;
-import es.ulpgc.dis.arquitecture.view.Observer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.util.Map;
 
-public class BoardDisplayPanel extends JPanel implements BoardDisplay, Observer {
+public class SwingBoardDisplayPanel extends JPanel implements BoardDisplay {
+    private final Map<String, Image> images = FileImageLoader.loadIcons();
     private Cell[][] cells;
-    private MineSweeperPresenter mineSweeperPresenter = null;
     private Position selectedPosition;
-    private Map<String, Image> images;
+    private Selected selected = null;
 
-    private void loadIcons() {
-        images = new FileImageLoader(new File("./src/main/resources/")).load();
-    }
 
-    public BoardDisplayPanel() {
+    public SwingBoardDisplayPanel() {
         addMouseListener(createMouseListener());
-        loadIcons();
         setDoubleBuffered(true);
     }
 
     @Override
-    public void display(MineSweeperPresenter mineSweeperPresenter) {
-        this.mineSweeperPresenter = mineSweeperPresenter;
-        this.cells = mineSweeperPresenter.getBoard();
+    public void display(Board board) {
+        this.cells = board.getContent();
         repaint();
+    }
+
+    @Override
+    public void of(Selected selected) {
+        this.selected = selected;
     }
 
     public int getCellWidth() {
@@ -65,7 +63,7 @@ public class BoardDisplayPanel extends JPanel implements BoardDisplay, Observer 
                 int y = row * cellHeight + 5;
                 Cell current = cells[row][col];
 
-                if (selectedPosition != null && (selectedPosition.x == row && selectedPosition.y == col)){
+                if (selectedPosition != null && (selectedPosition.x() == row && selectedPosition.y() == col)){
                     paintSelectedCell(g, x, y, cellWidth, cellHeight);
                 } else if (current.status() == Cell.Status.Unrevealed){
                     paintNoneRevealedCell(g, x, y, cellWidth, cellHeight);
@@ -133,9 +131,7 @@ public class BoardDisplayPanel extends JPanel implements BoardDisplay, Observer 
         return (x - 5) / getCellWidth();
     }
 
-    private Cell findCellAt(int x, int y) {
-        return cells[toRow(y)][toColumn(x)];
-    }
+
 
     private MouseListener createMouseListener() {
         return new MouseListener() {
@@ -144,15 +140,8 @@ public class BoardDisplayPanel extends JPanel implements BoardDisplay, Observer 
                 int button = e.getButton();
                 int currentRow = toRow(e.getY());
                 int currentColumn = toColumn(e.getX());
-                if (button == 1){
-                    System.out.println("Revealed (" + currentRow + ", " + currentColumn + ")");
-                    mineSweeperPresenter.realizeMove(currentRow, currentColumn, false);
-                } else if (button == 3){
-                    System.out.println("Flagged  (" + currentRow + ", " + currentColumn + ")");
-                    mineSweeperPresenter.realizeMove(currentRow, currentColumn, true);
-                } else {
-                    System.out.println("None configured");
-                }
+
+                selected.at(new Position(currentRow, currentColumn), button);
             }
 
             @Override
@@ -176,12 +165,4 @@ public class BoardDisplayPanel extends JPanel implements BoardDisplay, Observer 
             }
         };
     }
-
-    @Override
-    public void update(MineSweeperPresenter mineSweeperPresenter) {
-        cells = mineSweeperPresenter.getBoard();
-        repaint();
-    }
-
-    private record Position(int x, int y){}
 }

@@ -1,160 +1,35 @@
 package es.ulpgc.dis.arquitecture.presenter;
 
-import es.ulpgc.dis.arquitecture.model.Cell;
-import es.ulpgc.dis.arquitecture.model.Minesweeper;
+import es.ulpgc.dis.arquitecture.model.MineSweeperGame;
+import es.ulpgc.dis.arquitecture.view.BoardDisplay;
+import es.ulpgc.dis.arquitecture.view.BoardDisplay.Selected;
 import es.ulpgc.dis.arquitecture.view.Observer;
 
-import java.util.ArrayList;
-import java.util.List;
+public class MineSweeperPresenter implements Observer {
 
-public class MineSweeperPresenter {
-    Minesweeper minesweeper;
+    private final MineSweeperGame mineSweeperGame;
+    private final BoardDisplay boardDisplay;
 
-    private final List<Observer> observers = new ArrayList<>(); // Presenter
-
-    private GameStatus gameStatus;
-    private int remainingMines;
-    private int numberOfMoves;
-
-    public MineSweeperPresenter(int numberOfRows, int numberOfColumns, int numberOfMines) {
-        this.minesweeper = new Minesweeper(numberOfRows, numberOfColumns, numberOfMines);
-
-        this.remainingMines = numberOfMines;
-        this.numberOfMoves = 0;
-
-        this.gameStatus = GameStatus.Progress;
+    public MineSweeperPresenter(MineSweeperGame mineSweeperGame, BoardDisplay boardDisplay) {
+        this.mineSweeperGame = mineSweeperGame;
+        this.boardDisplay = boardDisplay;
+        boardDisplay.of(selected());
+        update(mineSweeperGame);
     }
 
-    public static MineSweeperPresenter easyDifficulty() {
-        return new MineSweeperPresenter(9, 9, 10);
-    }
-
-    public void changeDifficulty(int numberOfRows, int numberOfColumns, int numberOfMines) {
-        this.minesweeper = new Minesweeper(numberOfRows, numberOfColumns, numberOfMines);
-
-        this.remainingMines = numberOfMines;
-        this.numberOfMoves = 0;
-
-        this.gameStatus = GameStatus.Progress;
-
-        updateAllObservers();
-    }
-
-    private void initStatusVariables(int numberOfMines) {
-        remainingMines = numberOfMines;
-        numberOfMoves = 0;
-        gameStatus = GameStatus.Progress;
-    }
-
-    public void realizeMove(int row, int  column, boolean flag) {
-        if (gameStatus != GameStatus.Progress || !isInBounds(row, column)) return;
-
-        if (numberOfMoves == 0) {
-            if (flag) return;
-            minesweeper.firstMove(row, column);
-        } else {
-            Cell previuosCell = minesweeper.getBoard()[row][column];
-            if (flag && previuosCell.mine()) updateRemainingMines(previuosCell);
-            minesweeper.nextMove(row, column, flag);
-        }
-
-        checkIfGameEnded();
-
-        numberOfMoves++;
-        updateAllObservers();
-    }
-
-    private void checkIfGameEnded() {
-        if (allCellsRevealed()) gameStatus = GameStatus.Win;
-        if (mineRevealed()) gameStatus = GameStatus.Loosed;
-    }
-
-    private void updateRemainingMines(Cell previuosCell) {
-        if (previuosCell.status() == Cell.Status.Flagged) {
-            remainingMines++;
-        } else if (previuosCell.status() == Cell.Status.Unrevealed) {
-            remainingMines--;
-        }
-    }
-
-    private boolean isInBounds(int newRow, int newColumn) {
-        return newRow >= 0 && newRow < minesweeper.getNumberOfRows() && newColumn >= 0 && newColumn < minesweeper.getNumberOfColumns();
-    }
-
-    public void restartGame() {
-        int numberOfRows = minesweeper.getNumberOfRows();
-        int numberOfColumns = minesweeper.getNumberOfColumns();
-        int numberOfMines = minesweeper.getNumberOfMines();
-
-        this.minesweeper = new Minesweeper(numberOfRows, numberOfColumns, numberOfMines);
-
-        initStatusVariables(numberOfMines);
-
-        updateAllObservers();
-    }
-
-    private boolean allCellsRevealed() {
-        Cell[][] board = minesweeper.getBoard();
-        for (int i = 0; i < minesweeper.getNumberOfRows(); i++) {
-            for (int j = 0; j < minesweeper.getNumberOfColumns(); j++) {
-                Cell currenCell = board[i][j];
-                if (!currenCell.mine() && currenCell.status() != Cell.Status.Revealed) {
-                    return false;
-                }
+    private Selected selected() {
+        return (cellPosition, button) -> {
+            System.out.println("pepe");
+            if (button == 1) {
+                mineSweeperGame.realizeMove(cellPosition.x(), cellPosition.y(), false);
+            } else if (button == 3) {
+                mineSweeperGame.realizeMove(cellPosition.x(), cellPosition.y(), true);
             }
-        }
-        return true;
+        };
     }
 
-    private boolean mineRevealed() {
-        Cell[][] board = minesweeper.getBoard();
-
-        System.out.println(board.length);
-
-        for (int i = 0; i < minesweeper.getNumberOfRows(); i++) {
-            for (int j = 0; j < minesweeper.getNumberOfColumns(); j++) {
-                Cell currenCell = board[i][j];
-                if (currenCell.mine() && currenCell.status() == Cell.Status.Revealed) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public MineSweeperPresenter removeObserver(Observer observer) {
-        observers.remove(observer);
-        return this;
-    }
-
-    public MineSweeperPresenter addObserver(Observer observer) {
-        observers.add(observer);
-        return this;
-    }
-
-    private void updateAllObservers() {
-        for (Observer observer : observers) observer.update(this);
-    }
-
-    public Cell[][] getBoard() {
-        return minesweeper.getBoard();
-    }
-
-    public int getRemainingMines() {
-        return remainingMines;
-    }
-
-    public int getTotalNumberOfMines() {
-        return minesweeper.getNumberOfMines();
-    }
-
-    public GameStatus getGameStatus() {
-        return gameStatus;
-    }
-
-    public enum GameStatus {
-        Progress,
-        Win,
-        Loosed,
+    @Override
+    public void update(MineSweeperGame mineSweeperGame) {
+        boardDisplay.display(mineSweeperGame.getBoard());
     }
 }

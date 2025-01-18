@@ -29,19 +29,19 @@ public class CustomDifficultDialog extends JDialog {
         JButton jButton = new JButton();
         jButton.setText("Accept");
         jButton.addActionListener(
-                _ -> {
-                    try {
-                        mines = Integer.parseInt(minesField.getText());
-                        rows = Integer.parseInt(rowsField.getText());
-                        columns = Integer.parseInt(columnsField.getText());
-                        dispose();
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(CustomDifficultDialog.this,
-                                "Por favor, introduce números válidos.",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
+            _ -> {
+                try {
+                    mines = Integer.parseInt(minesField.getText());
+                    rows = Integer.parseInt(rowsField.getText());
+                    columns = Integer.parseInt(columnsField.getText());
+                    dispose();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(CustomDifficultDialog.this,
+                            "Por favor, introduce números válidos.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
+            }
         );
         return jButton;
     }

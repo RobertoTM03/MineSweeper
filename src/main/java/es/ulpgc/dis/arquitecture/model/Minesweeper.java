@@ -19,7 +19,7 @@ public class Minesweeper {
         initializeBoard();
     }
 
-    public Cell[][] getBoard() {
+    public Cell[][] getCellMatrix() {
         Cell[][] copy = new Cell[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
             System.arraycopy(board[i], 0, copy[i], 0, board[i].length);
@@ -27,7 +27,7 @@ public class Minesweeper {
         return copy;
     }
 
-    private void initGame(int row, int column) {
+    private void initGameWithPrediction(int row, int column) {
         placeMines(row, column);
         calculateNumbersOfCells();
     }
@@ -89,7 +89,7 @@ public class Minesweeper {
     }
 
     public void firstMove(int row, int column) {
-        initGame(row, column);
+        initGameWithPrediction(row, column);
         nextMove(row, column, false);
     }
 
@@ -115,10 +115,8 @@ public class Minesweeper {
         Cell currentCell = board[row][column];
         if (currentCell.status() == Cell.Status.Unrevealed){
             board[row][column] = new Cell(Cell.Status.Flagged, currentCell.mine(), currentCell.adjacentMines());
-            //remainingMines--;
         } else if (currentCell.status() == Cell.Status.Flagged) {
             board[row][column] = new Cell(Cell.Status.Unrevealed, currentCell.mine(), currentCell.adjacentMines());
-            //remainingMines++;
         }
     }
 
