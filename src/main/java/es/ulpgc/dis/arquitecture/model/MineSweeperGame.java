@@ -107,8 +107,6 @@ public class MineSweeperGame {
     private boolean mineRevealed() {
         Cell[][] board = minesweeper.getCellMatrix();
 
-        System.out.println(board.length);
-
         for (int i = 0; i < minesweeper.getNumberOfRows(); i++) {
             for (int j = 0; j < minesweeper.getNumberOfColumns(); j++) {
                 Cell currenCell = board[i][j];
@@ -122,6 +120,7 @@ public class MineSweeperGame {
 
     public MineSweeperGame addObserver(Observer observer) {
         observers.add(observer);
+        observer.update(this);
         return this;
     }
 
