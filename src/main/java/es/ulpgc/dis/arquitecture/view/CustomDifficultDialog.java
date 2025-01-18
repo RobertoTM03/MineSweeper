@@ -1,4 +1,4 @@
-package es.ulpgc.dis.view;
+package es.ulpgc.dis.arquitecture.view;
 
 import javax.swing.*;
 import java.awt.*;

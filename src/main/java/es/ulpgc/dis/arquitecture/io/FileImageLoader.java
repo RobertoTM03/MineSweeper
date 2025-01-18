@@ -1,6 +1,6 @@
-package es.ulpgc.dis.io;
+package es.ulpgc.dis.arquitecture.io;
 
-import es.ulpgc.dis.model.Image;
+import es.ulpgc.dis.arquitecture.model.Image;
 
 import javax.swing.*;
 import java.io.File;

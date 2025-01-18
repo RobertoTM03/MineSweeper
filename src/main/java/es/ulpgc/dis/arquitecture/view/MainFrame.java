@@ -1,8 +1,8 @@
-package es.ulpgc.dis.view;
+package es.ulpgc.dis.arquitecture.view;
 
-import es.ulpgc.dis.control.Command;
-import es.ulpgc.dis.presenter.BoardDisplayPanel;
-import es.ulpgc.dis.presenter.MineSweeperPresenter;
+import es.ulpgc.dis.arquitecture.control.Command;
+import es.ulpgc.dis.app.BoardDisplayPanel;
+import es.ulpgc.dis.arquitecture.presenter.MineSweeperPresenter;
 
 import javax.swing.*;
 import java.awt.*;

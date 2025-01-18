@@ -1,10 +1,11 @@
-package es.ulpgc.dis.presenter;
+package es.ulpgc.dis.app;
 
-import es.ulpgc.dis.io.FileImageLoader;
-import es.ulpgc.dis.model.Cell;
-import es.ulpgc.dis.model.Image;
-import es.ulpgc.dis.view.BoardDisplay;
-import es.ulpgc.dis.view.Observer;
+import es.ulpgc.dis.arquitecture.io.FileImageLoader;
+import es.ulpgc.dis.arquitecture.model.Cell;
+import es.ulpgc.dis.arquitecture.model.Image;
+import es.ulpgc.dis.arquitecture.presenter.MineSweeperPresenter;
+import es.ulpgc.dis.arquitecture.view.BoardDisplay;
+import es.ulpgc.dis.arquitecture.view.Observer;
 
 import javax.swing.*;
 import java.awt.*;

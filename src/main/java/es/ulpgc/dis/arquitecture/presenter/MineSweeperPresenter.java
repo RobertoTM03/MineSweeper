@@ -1,8 +1,8 @@
-package es.ulpgc.dis.presenter;
+package es.ulpgc.dis.arquitecture.presenter;
 
-import es.ulpgc.dis.model.Cell;
-import es.ulpgc.dis.model.Minesweeper;
-import es.ulpgc.dis.view.Observer;
+import es.ulpgc.dis.arquitecture.model.Cell;
+import es.ulpgc.dis.arquitecture.model.Minesweeper;
+import es.ulpgc.dis.arquitecture.view.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
