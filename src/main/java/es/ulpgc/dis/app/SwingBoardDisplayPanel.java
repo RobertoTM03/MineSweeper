@@ -54,6 +54,7 @@ public class SwingBoardDisplayPanel extends JPanel implements BoardDisplay {
 
     @Override
     protected void paintComponent(Graphics g) {
+        //TODO effiency improvment
         super.paintComponent(g);
         int cellWidth = getCellWidth();
         int cellHeight = getCellHeight();
@@ -151,9 +152,13 @@ public class SwingBoardDisplayPanel extends JPanel implements BoardDisplay {
                 if (currentRow == toRow(e.getY()) && currentColumn == toColumn(e.getX())) {
                     selected.at(new Position(currentRow, currentColumn), e.getButton());
                 }
-                selectedPosition = null;
+                quitSelectedPosition();
                 repaint();
             }
         };
+    }
+
+    public void quitSelectedPosition() {
+        selectedPosition = null;
     }
 }
