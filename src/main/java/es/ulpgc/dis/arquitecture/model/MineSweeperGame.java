@@ -44,7 +44,7 @@ public class MineSweeperGame {
     }
 
     public void realizeMove(int row, int  column, boolean flag) {
-        if (gameStatus != GameStatus.Progress || !isInBounds(row, column)) return;
+        if (gameStatus == GameStatus.Win || !isInBounds(row, column)) return;
 
         if (numberOfMoves == 0) {
             if (flag) {
@@ -66,7 +66,7 @@ public class MineSweeperGame {
 
     private void checkIfGameEnded() {
         if (allCellsRevealed()) gameStatus = GameStatus.Win;
-        if (mineRevealed()) gameStatus = GameStatus.Loosed;
+        if (mineRevealed()) gameStatus = GameStatus.Lose;
     }
 
     private void updateRemainingMines(Cell previuosCell) {
@@ -145,6 +145,6 @@ public class MineSweeperGame {
     public enum GameStatus {
         Progress,
         Win,
-        Loosed,
+        Lose
     }
 }

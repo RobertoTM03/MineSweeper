@@ -1,6 +1,7 @@
 package es.ulpgc.dis.app;
 
 import es.ulpgc.dis.arquitecture.control.MineSweeperDifficultyController;
+import es.ulpgc.dis.arquitecture.control.MineSweeperFinishGameCommand;
 import es.ulpgc.dis.arquitecture.control.MineSweeperRestartGameCommand;
 import es.ulpgc.dis.arquitecture.model.MineSweeperGame;
 import es.ulpgc.dis.arquitecture.presenter.MineSweeperPresenter;
@@ -14,7 +15,8 @@ public class Main {
                 .addCommand("restartGame", new MineSweeperRestartGameCommand(mainFrame, mineSweeperGame));
 
         MineSweeperPresenter mineSweeperPresenter = new MineSweeperPresenter(mineSweeperGame, mainFrame.display());
-
+        SwingFinishDialog finishDialog = new SwingFinishDialog(mainFrame);
+        mainFrame.addCommand("finishGame", new MineSweeperFinishGameCommand(mineSweeperGame, finishDialog, mineSweeperPresenter));
         mineSweeperGame.addObserver(mineSweeperPresenter)
                 .addObserver(mainFrame);
 

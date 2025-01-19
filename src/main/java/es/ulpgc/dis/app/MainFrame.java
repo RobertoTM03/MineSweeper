@@ -18,6 +18,7 @@ public class MainFrame extends JFrame implements Observer {
     private Timer timer;
     private JLabel timeLabel;
     private JLabel minesLabel;
+    private Component restart;
 
     public MainFrame() {
         setTitle("MineSweeper");
@@ -43,6 +44,7 @@ public class MainFrame extends JFrame implements Observer {
         panel.setLayout(new FlowLayout());
         panel.add(minesCounter());
         panel.add(difficultyCombo());
+        restart = restartButton();
         panel.add(restartButton());
         panel.add(timeDisplay());
         return panel;
@@ -94,14 +96,8 @@ public class MainFrame extends JFrame implements Observer {
     public void update(MineSweeperGame mineSweeperGame) {
         minesLabel.setText("" + mineSweeperGame.getRemainingMines());
         if (mineSweeperGame.getGameStatus() != MineSweeperGame.GameStatus.Progress) {
-            String result;
             timer.stop();
-            if (mineSweeperGame.getGameStatus() == MineSweeperGame.GameStatus.Win) {
-                result = "¡Has ganado!";
-            } else {
-                result = "¡Has perdido!";
-            }
-            JOptionPane.showMessageDialog(null, result, "Resultado", JOptionPane.INFORMATION_MESSAGE);
+            commands.get("finishGame").execute();
         }
     }
 
@@ -117,5 +113,13 @@ public class MainFrame extends JFrame implements Observer {
 
     public BoardDisplay display() {
         return boardDisplay;
+    }
+
+    public String time() {
+        return timeLabel.getText();
+    }
+
+    public Component getRestartButton(){
+        return restart;
     }
 }
