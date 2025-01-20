@@ -15,8 +15,10 @@ public class Main {
                 .addCommand("restartGame", new MineSweeperRestartGameCommand(mainFrame, mineSweeperGame));
 
         MineSweeperPresenter mineSweeperPresenter = new MineSweeperPresenter(mineSweeperGame, mainFrame.display());
-        SwingFinishDialog finishDialog = new SwingFinishDialog(mainFrame);
-        mainFrame.addCommand("finishGame", new MineSweeperFinishGameCommand(mineSweeperGame, finishDialog, mineSweeperPresenter));
+
+        SwingFinishDialog swingFinishDialog = new SwingFinishDialog(mainFrame);
+
+        mainFrame.addCommand("finishGame", new MineSweeperFinishGameCommand(mineSweeperGame, swingFinishDialog, mineSweeperPresenter));
         mineSweeperGame.addObserver(mineSweeperPresenter)
                 .addObserver(mainFrame);
 

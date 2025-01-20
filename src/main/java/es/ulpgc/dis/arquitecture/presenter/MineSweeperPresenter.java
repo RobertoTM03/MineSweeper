@@ -13,20 +13,20 @@ public class MineSweeperPresenter implements Observer {
 
     private final MineSweeperGame mineSweeperGame;
     private final BoardDisplay boardDisplay;
-    private boolean progres;
+    private boolean progress;
 
     public MineSweeperPresenter(MineSweeperGame mineSweeperGame, BoardDisplay boardDisplay) {
         this.mineSweeperGame = mineSweeperGame;
         this.boardDisplay = boardDisplay;
         boardDisplay.of(selected());
         update(mineSweeperGame);
-        progres = true;
+        progress = true;
     }
 
     private Selected selected() {
         return (cellPosition, button) -> {
             if (button == 1) {
-                if (progres){
+                if (progress){
                     mineSweeperGame.realizeMove(cellPosition.x(), cellPosition.y(), false);
                     gameLost();
                     update(mineSweeperGame);
@@ -53,14 +53,14 @@ public class MineSweeperPresenter implements Observer {
             }
         }
         update(mineSweeperGame);
-        progres = false;
+        progress = false;
     }
 
     @Override
     public void update(MineSweeperGame mineSweeperGame) {
         boardDisplay.display(mineSweeperGame.getBoard());
         if (mineSweeperGame.getGameStatus() == Progress) {
-            progres = true;
+            progress = true;
         }
     }
 }

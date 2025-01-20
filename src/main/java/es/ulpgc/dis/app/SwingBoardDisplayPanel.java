@@ -54,7 +54,7 @@ public class SwingBoardDisplayPanel extends JPanel implements BoardDisplay {
 
     @Override
     protected void paintComponent(Graphics g) {
-        //TODO effiency improvment
+        //TODO efficiency improvement
         super.paintComponent(g);
         int cellWidth = getCellWidth();
         int cellHeight = getCellHeight();

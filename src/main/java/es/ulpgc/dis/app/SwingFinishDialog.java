@@ -7,21 +7,21 @@ import java.awt.*;
 
 public class SwingFinishDialog extends JDialog implements FinishDialog {
 
-    private final MainFrame owner;
+    private final MainFrame mainFrame;
     private final JLabel finishLabel;
 
-    public SwingFinishDialog(MainFrame owner){
-        super(owner, "FinshGame", false);
-        this.owner = owner;
+    public SwingFinishDialog(MainFrame mainFrame){
+        super(mainFrame, "FinishGame", false);
+        this.mainFrame = mainFrame;
         this.setSize(200, 100);
         this.setLayout(new BorderLayout());
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         finishLabel = new JLabel("Finish message", SwingConstants.CENTER);
         this.add(finishLabel);
-        JButton restartButton = (JButton) owner.getRestartButton();
+        JButton restartButton = (JButton) mainFrame.getRestartButton();
         restartButton.addActionListener(_ -> this.dispose());
         this.add(restartButton, BorderLayout.SOUTH);
-        this.setLocationRelativeTo(owner);
+        this.setLocationRelativeTo(mainFrame);
 
     }
 
@@ -34,7 +34,7 @@ public class SwingFinishDialog extends JDialog implements FinishDialog {
 
     @Override
     public void win() {
-        String result = "You win in " + owner.time() + " !";
+        String result = "You win in " + mainFrame.time() + " !";
         finishLabel.setText(result);
         this.setVisible(true);
     }

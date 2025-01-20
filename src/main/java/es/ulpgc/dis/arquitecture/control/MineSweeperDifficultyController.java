@@ -41,7 +41,7 @@ public class MineSweeperDifficultyController implements Command {
 
         if (mines < minMines || mines > maxMines) {
             customDialog.showWarning("Ethe amount of mines must be between " + minMines + " & " + maxMines +
-                    " for a boarrd of " + rows + "x" + columns + ".");
+                    " for a board of " + rows + "x" + columns + ".");
             return;
         }
 

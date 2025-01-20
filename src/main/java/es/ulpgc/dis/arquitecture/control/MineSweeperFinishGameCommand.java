@@ -5,20 +5,20 @@ import es.ulpgc.dis.arquitecture.presenter.MineSweeperPresenter;
 import es.ulpgc.dis.arquitecture.view.FinishDialog;
 
 public class MineSweeperFinishGameCommand implements Command{
-    private final MineSweeperGame game;
-    private final MineSweeperPresenter presenter;
+    private final MineSweeperGame mineSweeperGame;
+    private final MineSweeperPresenter mineSweeperPresenter;
     private final FinishDialog finishDialog;
 
-    public MineSweeperFinishGameCommand(MineSweeperGame game, FinishDialog finishDialog, MineSweeperPresenter presenter){
-        this.game = game;
+    public MineSweeperFinishGameCommand(MineSweeperGame mineSweeperGame, FinishDialog finishDialog, MineSweeperPresenter mineSweeperPresenter){
+        this.mineSweeperGame = mineSweeperGame;
         this.finishDialog = finishDialog;
-        this.presenter = presenter;
+        this.mineSweeperPresenter = mineSweeperPresenter;
     }
 
     @Override
     public void execute() {
-        presenter.update(game);
-        switch (game.getGameStatus()){
+        mineSweeperPresenter.update(mineSweeperGame);
+        switch (mineSweeperGame.getGameStatus()){
             case MineSweeperGame.GameStatus.Win -> finishDialog.win();
             case MineSweeperGame.GameStatus.Lose -> finishDialog.lose();
         }
